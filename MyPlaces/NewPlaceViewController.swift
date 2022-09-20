@@ -6,33 +6,44 @@
 //
 
 import UIKit
+//import Cosmos
 
 class NewPlaceViewController: UITableViewController {
     
+    var currentPlace: Place!
     var imageIsChange = false
+  //  var currentRating = 0.0
 
-    @IBOutlet weak var placeImage: UIImageView!
-    @IBOutlet weak var saveButton: UIBarButtonItem!
-    @IBOutlet weak var placeName: UITextField!
+    @IBOutlet weak var placeImage:    UIImageView!
+    @IBOutlet weak var saveButton:    UIBarButtonItem!
+    @IBOutlet weak var placeName:     UITextField!
     @IBOutlet weak var placeLocation: UITextField!
-    @IBOutlet weak var placeType: UITextField!
+    @IBOutlet weak var placeType:     UITextField!
+    @IBOutlet var ratingControl:      RatingControl!
+    //@IBOutlet var cosmosView: CosmosView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-      
-        
-        tableView.tableFooterView = UIView()
+        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
         saveButton.isEnabled = false
         placeName.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
+        setupEditScreen()
+        
+//        cosmosView.didTouchCosmos = { rating in
+//            //print("\(rating)")
+//            self.currentRating = rating
+//        }
     }
     
     //MARK: - Table view delegate
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.row == 0 {
-            let cameraIcon = #imageLiteral(resourceName: "camera")
-            let photoIcon = #imageLiteral(resourceName: "photo")
+            let cameraIcon =  #imageLiteral(resourceName: "camera")
+            let photoIcon  =  #imageLiteral(resourceName: "photo")
             
             let actionSheet = UIAlertController(title: nil,
                                                 message: nil,
@@ -65,8 +76,8 @@ class NewPlaceViewController: UITableViewController {
         }
     }
     
-    func saveNewPlace(){
-                
+    func savePlace(){
+        
         var image: UIImage?
         
         if imageIsChange{
@@ -77,12 +88,51 @@ class NewPlaceViewController: UITableViewController {
         
         let imageData = image?.pngData()
         
-        let newPlace = Place(name: placeName.text!,
-                             location: placeLocation.text,
-                             type: placeType.text,
-                             imageData: imageData)
+        let newPlace = Place(name:      placeName.text!,
+                             location:  placeLocation.text,
+                             type:      placeType.text,
+                             imageData: imageData,
+                             rating:    Double(ratingControl.rating))
         
-        StorageManager.saveObject(newPlace)
+        if currentPlace != nil{
+            try! realm.write({
+                currentPlace?.name      = newPlace.name
+                currentPlace?.location  = newPlace.location
+                currentPlace?.type      = newPlace.type
+                currentPlace?.imageData = newPlace.imageData
+                currentPlace?.rating    = newPlace.rating
+            })
+        }else{
+            StorageManager.saveObject(newPlace)
+        }
+    }
+    
+    
+    private func setupEditScreen(){
+        if currentPlace != nil {
+            setupNavigationBar()
+            imageIsChange          = true
+            guard let data         = currentPlace?.imageData, let image = UIImage(data: data) else { return }
+            placeImage.image       = image
+            placeImage.contentMode = .scaleAspectFill
+            placeName.text         = currentPlace?.name
+            placeLocation.text     = currentPlace?.location
+            placeType.text         = currentPlace?.type
+            //cosmosView.rating      = currentPlace.rating
+            ratingControl.rating = Int(currentPlace.rating)
+        }
+    }
+    
+    private func setupNavigationBar(){
+        if let topItem = navigationController?.navigationBar.topItem{
+            topItem.backBarButtonItem = UIBarButtonItem.init(title: "",
+                                                             style: .plain,
+                                                             target: nil,
+                                                             action: nil)
+        }
+        navigationItem.leftBarButtonItem = nil
+        title = currentPlace?.name
+        saveButton.isEnabled = true
     }
     
     
