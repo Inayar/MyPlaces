@@ -129,7 +129,7 @@
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="Placeholder"/>
                                                     <connections>
-                                                        <segue destination="O0M-DN-fGA" kind="presentation" identifier="getAdress" id="FOP-bT-lGZ"/>
+                                                        <segue destination="O0M-DN-fGA" kind="presentation" identifier="getAddress" id="FOP-bT-lGZ"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -290,13 +290,27 @@
                                     <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
                                 <connections>
+                                    <action selector="doneButtonPressed" destination="O0M-DN-fGA" eventType="touchUpInside" id="mQf-95-dWp"/>
                                     <action selector="doneButtonPressed:" destination="O0M-DN-fGA" eventType="touchUpInside" id="6GM-AI-Jse"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WIv-fu-A0g">
+                                <rect key="frame" x="182" y="688" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="05U-NS-kx4"/>
+                                    <constraint firstAttribute="height" constant="50" id="YOD-fJ-BNg"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="GetDirection"/>
+                                <connections>
+                                    <action selector="goButtonPressed" destination="O0M-DN-fGA" eventType="touchUpInside" id="WCp-SM-IwL"/>
                                 </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="c0q-Jq-XP9"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="c0q-Jq-XP9" firstAttribute="bottom" secondItem="WIv-fu-A0g" secondAttribute="bottom" constant="100" id="0kb-wT-BCQ"/>
                             <constraint firstItem="jeP-DP-NVr" firstAttribute="centerX" secondItem="DdL-aK-bMs" secondAttribute="centerX" id="1Fc-B8-BTV"/>
                             <constraint firstItem="c0q-Jq-XP9" firstAttribute="trailing" secondItem="r3l-g7-Ffk" secondAttribute="trailing" constant="40" id="2ZU-po-SbK"/>
                             <constraint firstItem="c0q-Jq-XP9" firstAttribute="trailing" secondItem="Sam-bt-dbP" secondAttribute="trailing" constant="20" id="84f-al-6NI"/>
@@ -312,11 +326,13 @@
                             <constraint firstItem="qqe-Pq-GpR" firstAttribute="top" secondItem="DdL-aK-bMs" secondAttribute="top" id="eTP-0A-19m"/>
                             <constraint firstItem="c0q-Jq-XP9" firstAttribute="bottom" secondItem="r3l-g7-Ffk" secondAttribute="bottom" constant="230" id="hkg-Ci-7xM"/>
                             <constraint firstItem="yFU-Tt-HXi" firstAttribute="centerX" secondItem="DdL-aK-bMs" secondAttribute="centerX" id="lBT-Pn-lfb"/>
+                            <constraint firstItem="WIv-fu-A0g" firstAttribute="centerX" secondItem="DdL-aK-bMs" secondAttribute="centerX" id="xi4-JO-6bC"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="adressLable" destination="Sam-bt-dbP" id="qNF-Pg-eHF"/>
+                        <outlet property="addressLable" destination="Sam-bt-dbP" id="qNF-Pg-eHF"/>
                         <outlet property="doneButton" destination="yFU-Tt-HXi" id="FYG-rt-uLz"/>
+                        <outlet property="goButton" destination="WIv-fu-A0g" id="hhQ-c2-8I8"/>
                         <outlet property="mapPinImage" destination="jeP-DP-NVr" id="So6-9M-koI"/>
                         <outlet property="mapView" destination="qqe-Pq-GpR" id="ZC2-tc-vb1"/>
                     </connections>
@@ -334,7 +350,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="85" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" id="ZUN-nJ-Cpf">
-                                <rect key="frame" x="-1" y="127" width="415" height="769"/>
+                                <rect key="frame" x="-3" y="125" width="415" height="770"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
                                 <prototypes>
@@ -431,7 +447,7 @@
                                 </connections>
                             </tableView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="oH0-Ze-Rlb">
-                                <rect key="frame" x="0.0" y="92" width="414" height="36"/>
+                                <rect key="frame" x="0.0" y="92" width="414" height="34"/>
                                 <segments>
                                     <segment title="Date"/>
                                     <segment title="Name"/>
@@ -524,6 +540,7 @@
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AZ" width="25" height="24"/>
+        <image name="GetDirection" width="50" height="50"/>
         <image name="Location" width="128" height="128"/>
         <image name="Pin" width="42" height="42"/>
         <image name="Placeholder" width="22" height="22"/>
